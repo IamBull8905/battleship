@@ -1,5 +1,5 @@
 {
-  "name": "template-repo",
+  "name": "battleship",
   "version": "1.0.0",
   "description": "This is the repository that holds all the setup code for the projects I work on.",
   "type": "module",
@@ -13,12 +13,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/IamBull8905/template-repo.git"
+    "url": "git+https://github.com/IamBull8905/battleship.git"
   },
   "bugs": {
-    "url": "https://github.com/IamBull8905/template-repo/issues"
+    "url": "https://github.com/IamBull8905/battleship/issues"
   },
-  "homepage": "https://github.com/IamBull8905/template-repo#readme",
+  "homepage": "https://github.com/IamBull8905/battleship#readme",
   "keywords": [],
   "author": "",
   "license": "ISC",
