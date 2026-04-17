@@ -7,6 +7,8 @@ export default defineConfig([
     languageOptions: {
       globals: {
         ...globals.jest,
+        ...globals.browser,
+        ...globals.node,
       },
     },
     rules: {
