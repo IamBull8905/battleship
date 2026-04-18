@@ -4,7 +4,6 @@ class Ship {
   constructor(length) {
     this.length = length;
     this.hits = 0;
-    this.sunk = false;
   }
 
   hit() {
@@ -12,11 +11,7 @@ class Ship {
   }
 
   isSunk() {
-    if (this.hits === this.length) {
-      return true;
-    } else {
-      return false;
-    }
+    return this.hits >= this.length;
   }
 }
 
@@ -90,4 +85,11 @@ function CreateGameboard() {
   return { getBoard, getMissedShots, placeShip, receiveAttack, allSunk };
 }
 
-export { Ship, CreateGameboard };
+class Player {
+  constructor(type = "real") {
+    this.playerType = type;
+    this.playerGameboard = CreateGameboard();
+  }
+}
+
+export { Ship, CreateGameboard, Player };
