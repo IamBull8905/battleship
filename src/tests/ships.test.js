@@ -1,4 +1,4 @@
-import { Ship } from "./index.js";
+import Ship from "../code/ship.js";
 
 describe("Ship initialisation & method testing", () => {
   test("Ship initialises correctly", () => {

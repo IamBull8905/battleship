@@ -1,4 +1,4 @@
-import { CreateGameboard } from "./index.js";
+import CreateGameboard from "../code/gameboard.js";
 
 describe("Gameboard initialisation & method testing", () => {
   test("Gameboard initialises correctly as a 10x10 grid", () => {

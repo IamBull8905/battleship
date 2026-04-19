@@ -1,4 +1,4 @@
-import { Player } from "./index.js";
+import Player from "../code/players.js"
 
 describe("Players initialise correctly with correct gameboard & type", () => {
   test("Real player initialises correctly", () => {
