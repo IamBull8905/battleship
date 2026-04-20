@@ -1,0 +1,38 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.flex-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 100vh;
+}
+
+.first-player-grid,
+.second-player-grid {
+    display: grid;
+    grid-template-columns: repeat(10, 50px);
+    grid-template-rows: repeat(10, 50px);
+}
+
+.tile {
+    background-color: #B7D1D3;
+    border: 1px solid black;
+}
+
+.occupied-tile {
+    background-color: #7dc3c8;
+    border: 1px solid black;
+}
+
+.shot-tile {
+    background-color: #d3cfb7;
+    border: 1px solid black;
+}
+
+.missed-tile {
+    background-color: #d3b7b7;
+    border: 1px solid black
+}

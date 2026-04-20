@@ -45,6 +45,8 @@ function CreateGameboard() {
   };
 
   const receiveAttack = function (row, col) {
+    row = Number(row);
+    col = Number(col);
     if (row >= 10 || row < 0 || col >= 10 || col < 0) {
       return false;
     }
@@ -53,8 +55,10 @@ function CreateGameboard() {
       const selectedShip = cell.ship;
       cell.hit = true;
       selectedShip.hit();
+      return true;
     } else {
       missedShots.push([row, col]);
+      return false;
     }
   };
 
