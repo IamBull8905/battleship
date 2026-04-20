@@ -2,7 +2,8 @@ import Player from "./players.js";
 
 const firstPlayerContainer = document.querySelector(".first-player-grid");
 const secondPlayerContainer = document.querySelector(".second-player-grid");
-let tiles = null;
+const p1Tiles = firstPlayerContainer.querySelectorAll(".tile");
+const p2Tiles = secondPlayerContainer.querySelectorAll(".tile");
 
 function setGridSize(container, player) {
   const playerGameboard = player.playerGameboard.getBoard();
@@ -20,8 +21,8 @@ function setGridSize(container, player) {
       container.appendChild(newDiv);
     }
   }
-  tiles = secondPlayerContainer.querySelectorAll(".tile");
 }
+
 const player1 = new Player();
 const player2 = new Player("computer");
 
@@ -41,29 +42,32 @@ setGridSize(firstPlayerContainer, player1);
 setGridSize(secondPlayerContainer, player2);
 
 let currentPlayer = 1;
-tiles.forEach((tile) => {
+p2Tiles.forEach((tile) => {
   tile.addEventListener("click", () => {
+    if (currentPlayer !== 1) return;
     let selectedRow = tile.dataset.row;
     let selectedCol = tile.dataset.col;
-    if (currentPlayer === 1) {
-      let result = player2.playerGameboard.receiveAttack(
-        selectedRow,
-        selectedCol,
-      );
-      currentPlayer = 2;
-      if (result) {
-        tile.classList.add("shot-tile");
-      } else {
-        tile.classList.add("missed-tile");
-      }
+    let result = player2.playerGameboard.receiveAttack(selectedRow,selectedCol);
+    if (result) {
+      tile.classList.add("shot-tile");
     } else {
-      let result = player1.playerGameboard.receiveAttack(selectedRow, selectedCol);
-      currentPlayer = 1;
-      if (result) {
-        tile.classList.add("shot-tile");
-      } else {
-        tile.classList.add("missed-tile");
+      tile.classList.add("missed-tile");
       }
-    }
+      currentPlayer = 2;
+  });
+});
+
+p1Tiles.forEach((tile) => {
+  tile.addEventListener("click", () => {
+    if (currentPlayer !== 2) return;
+    let selectedRow = tile.dataset.row;
+    let selectedCol = tile.dataset.col;
+    let result = player1.playerGameboard.receiveAttack(selectedRow,selectedCol);
+    if (result) {
+      tile.classList.add("shot-tile");
+    } else {
+      tile.classList.add("missed-tile");
+      }
+      currentPlayer = 1;
   });
 });
