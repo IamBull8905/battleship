@@ -6,6 +6,7 @@ function CreateGameboard() {
   const board = [];
   const currentShips = [];
   const missedShots = [];
+  const illegalMoves = [];
 
   for (let i = 0; i < rows; i++) {
     board[i] = [];
@@ -16,6 +17,7 @@ function CreateGameboard() {
 
   const getBoard = () => board;
   const getMissedShots = () => missedShots;
+  const getIllegalMoves = () => illegalMoves;
 
   const placeShip = function (row, col, shipLength, direction = "H") {
     if (row >= 10 || row < 0 || col >= 10 || col < 0) {
@@ -71,7 +73,7 @@ function CreateGameboard() {
     return true;
   };
 
-  return { getBoard, getMissedShots, placeShip, receiveAttack, allSunk };
+  return { getBoard, getMissedShots, getIllegalMoves, placeShip, receiveAttack, allSunk };
 }
 
 export default CreateGameboard;
