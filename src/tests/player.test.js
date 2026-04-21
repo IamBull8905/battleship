@@ -11,5 +11,6 @@ describe("Players initialise correctly with correct gameboard & type", () => {
     const player = new Player("computer");
     expect(player.playerType).toBe("computer");
     expect(player.playerGameboard).toBeDefined();
+    expect(player.computerMove).toBeDefined();
   });
 });
