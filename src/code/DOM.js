@@ -47,11 +47,14 @@ let currentPlayer = 1;
 
 function handleComputerMoves(player) {
   let targetTile = null;
-  let move = player.computerMove;
+  let move = player.computerMove(player.playerGameboard);
   let [selectedRow, selectedCol] = move;
   let result = player1.playerGameboard.receiveAttack(selectedRow, selectedCol);
   for (const tile of p1Tiles) {
-    if ((tile.dataset.row === String(selectedRow)) && (tile.dataset.col === String(selectedCol))) {
+    if (
+      tile.dataset.row === String(selectedRow) &&
+      tile.dataset.col === String(selectedCol)
+    ) {
       targetTile = tile;
       break;
     }
@@ -64,11 +67,20 @@ function handleComputerMoves(player) {
   currentPlayer = 1;
 }
 
+let p1IllegalMoves = [];
+
 p2Tiles.forEach((tile) => {
   tile.addEventListener("click", () => {
     if (currentPlayer !== 1) return;
     let selectedRow = tile.dataset.row;
     let selectedCol = tile.dataset.col;
+    for (const element of p1IllegalMoves) {
+      let [a,b] = element;
+      if (selectedRow === a && selectedCol === b) {
+        console.error("You can't click the same square twice");
+        return;
+      }
+    }
     let result = player2.playerGameboard.receiveAttack(
       selectedRow,
       selectedCol,
@@ -78,9 +90,9 @@ p2Tiles.forEach((tile) => {
     } else {
       tile.classList.add("missed-tile");
     }
+    p1IllegalMoves.push([selectedRow, selectedCol]);
     currentPlayer = 2;
     handleComputerMoves(player2);
-    console.log(currentPlayer);
   });
 });
 

@@ -23,6 +23,7 @@ function getComputerMove(playerGameboard) {
       }
     }
   }
+  playerGameboard.getIllegalMoves().push([xCoord, yCoord]);
   return [xCoord, yCoord];
 }
 
@@ -31,7 +32,7 @@ class Player {
     this.playerType = type;
     this.playerGameboard = CreateGameboard();
     if (type === "computer") {
-      this.computerMove = getComputerMove(this.playerGameboard);
+      this.computerMove = getComputerMove;
     }
   }
 }
