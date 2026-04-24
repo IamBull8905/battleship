@@ -22,6 +22,11 @@
     border: 1px solid black;
 }
 
+.locked-tile {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
 .occupied-tile {
     background-color: #7dc3c8;
     border: 1px solid black;
@@ -35,4 +40,9 @@
 .missed-tile {
     background-color: #d3b7b7;
     border: 1px solid black
+}
+
+.status-text {
+    text-align: center;
+    margin-top: 20px;
 }

@@ -2,6 +2,8 @@ import Player from "./players.js";
 
 const firstPlayerContainer = document.querySelector(".first-player-grid");
 const secondPlayerContainer = document.querySelector(".second-player-grid");
+const headingStatus = document.querySelector(".status-text");
+let movesBlocked = false;
 
 function setGridSize(container, player) {
   const playerGameboard = player.playerGameboard.getBoard();
@@ -45,6 +47,10 @@ const p2Tiles = secondPlayerContainer.querySelectorAll(".tile");
 
 let currentPlayer = 1;
 
+setTimeout(() => {
+  headingStatus.textContent = `It's player ${currentPlayer}'s turn!`;
+}, 2500);
+
 function handleComputerMoves(player) {
   let targetTile = null;
   let move = player.computerMove(player.playerGameboard);
@@ -59,23 +65,41 @@ function handleComputerMoves(player) {
       break;
     }
   }
+  setTimeout(() => {
   if (result) {
     targetTile.classList.add("shot-tile");
   } else {
     targetTile.classList.add("missed-tile");
   }
   currentPlayer = 1;
+  headingStatus.textContent = `It's player ${currentPlayer}'s turn!`;
+  }, 750);
 }
 
 let p1IllegalMoves = [];
 
 p2Tiles.forEach((tile) => {
   tile.addEventListener("click", () => {
-    if (currentPlayer !== 1) return;
+    if (currentPlayer !== 1 || movesBlocked === true) return;
+    if (player2.playerGameboard.allSunk()) {
+      headingStatus.textContent =
+        "Game over, player 1 has won this round of Battleship!";
+      movesBlocked = true;
+      p1Tiles.forEach((tile) => tile.classList.add("locked-tile"));
+      p2Tiles.forEach((tile) => tile.classList.add("locked-tile"));
+      return;
+    } else if (player1.playerGameboard.allSunk()) {
+      headingStatus.textContent =
+        "Game over, player 2 has won this round of Battleship!";
+      movesBlocked = true;
+      p1Tiles.forEach((tile) => tile.classList.add("locked-tile"));
+      p2Tiles.forEach((tile) => tile.classList.add("locked-tile"));
+      return;
+    }
     let selectedRow = tile.dataset.row;
     let selectedCol = tile.dataset.col;
     for (const element of p1IllegalMoves) {
-      let [a,b] = element;
+      let [a, b] = element;
       if (selectedRow === a && selectedCol === b) {
         console.error("You can't click the same square twice");
         return;
@@ -92,13 +116,29 @@ p2Tiles.forEach((tile) => {
     }
     p1IllegalMoves.push([selectedRow, selectedCol]);
     currentPlayer = 2;
+    headingStatus.textContent = `It's player ${currentPlayer}'s turn!`;
     handleComputerMoves(player2);
   });
 });
 
 p1Tiles.forEach((tile) => {
   tile.addEventListener("click", () => {
-    if (currentPlayer !== 2) return;
+    if (currentPlayer !== 2 || movesBlocked === true) return;
+    if (player2.playerGameboard.allSunk()) {
+      headingStatus.textContent =
+        "Game over, player 1 has won this round of Battleship!";
+      movesBlocked = true;
+      p1Tiles.forEach((tile) => tile.classList.add("locked-tile"));
+      p2Tiles.forEach((tile) => tile.classList.add("locked-tile"));
+      return;
+    } else if (player1.playerGameboard.allSunk()) {
+      headingStatus.textContent =
+        "Game over, player 2 has won this round of Battleship!";
+      movesBlocked = true;
+      p1Tiles.forEach((tile) => tile.classList.add("locked-tile"));
+      p2Tiles.forEach((tile) => tile.classList.add("locked-tile"));
+      return;
+    }
     let selectedRow = tile.dataset.row;
     let selectedCol = tile.dataset.col;
     let result = player1.playerGameboard.receiveAttack(
@@ -111,5 +151,6 @@ p1Tiles.forEach((tile) => {
       tile.classList.add("missed-tile");
     }
     currentPlayer = 1;
+    headingStatus.textContent = `It's player ${currentPlayer}'s turn!`;
   });
 });
