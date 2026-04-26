@@ -1,0 +1,70 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.flex-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 100vh;
+}
+
+.first-player-container,
+.top-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.first-player-grid,
+.second-player-grid {
+    display: grid;
+    grid-template-columns: repeat(10, 50px);
+    grid-template-rows: repeat(10, 50px);
+}
+
+.tile {
+    background-color: #B7D1D3;
+    border: 1px solid black;
+}
+
+.locked-tile,
+.locked-button {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.locked-button {
+    opacity: 1;
+}
+
+.occupied-tile {
+    background-color: #7dc3c8;
+    border: 1px solid black;
+}
+
+.shot-tile {
+    background-color: #d3cfb7;
+    border: 1px solid black;
+}
+
+.missed-tile {
+    background-color: #d3b7b7;
+    border: 1px solid black
+}
+
+.status-text {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.random-placement,
+.start-button {
+    height: 30px;
+    width: 150px;
+    border-radius: 7px;
+}
+
+/*# sourceMappingURL=app.d4d9f8b38e1e32cd90e2.css.map*/
