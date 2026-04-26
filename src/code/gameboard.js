@@ -23,8 +23,6 @@ function CreateGameboard() {
     if (row >= 10 || row < 0 || col >= 10 || col < 0) {
       return false;
     }
-    const ship = new Ship(shipLength);
-    currentShips.push(ship);
 
     for (let i = 0; i < shipLength; i++) {
       if (direction === "H") {
@@ -35,6 +33,9 @@ function CreateGameboard() {
         if (board[row + i][col].ship !== null) return false;
       }
     }
+    
+    const ship = new Ship(shipLength);
+    currentShips.push(ship);
 
     for (let i = 0; i < shipLength; i++) {
       if (direction === "H") {
@@ -73,7 +74,14 @@ function CreateGameboard() {
     return true;
   };
 
-  return { getBoard, getMissedShots, getIllegalMoves, placeShip, receiveAttack, allSunk };
+  return {
+    getBoard,
+    getMissedShots,
+    getIllegalMoves,
+    placeShip,
+    receiveAttack,
+    allSunk,
+  };
 }
 
 export default CreateGameboard;

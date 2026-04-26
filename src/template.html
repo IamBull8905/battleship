@@ -6,9 +6,15 @@
     <title>Battleship</title>
   </head>
   <body>
-    <h1 class = "status-text">Welcome to Battleship!</h1>
+    <div class="top-container">
+      <h1 class="status-text">Welcome to Battleship!</h1>
+      <button class="start-button locked-button">Start the game!</button>
+    </div>
     <div class="flex-container">
-      <div class="first-player-grid"></div>
+      <div class="first-player-container">
+        <div class="first-player-grid"></div>
+        <button class="random-placement">Random placement</button>
+      </div>
       <div class="second-player-grid"></div>
     </div>
   </body>
