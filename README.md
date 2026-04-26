@@ -1,1 +1,2 @@
 # battleship
+This is the twelfth and final project of the Javascript track in The Odin Project. This project utilises everything I have learnt in this track in order to build a fully functional player vs computer battleship.
