@@ -28,8 +28,9 @@ function getComputerMove(playerGameboard) {
 }
 
 class Player {
-  constructor(type = "real") {
+  constructor(playerName, type = "real") {
     this.playerType = type;
+    this.playerName = playerName;
     this.playerGameboard = CreateGameboard();
     if (type === "computer") {
       this.computerMove = getComputerMove;

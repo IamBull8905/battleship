@@ -9,11 +9,37 @@ const randomPlacementButton2 = document.querySelector(".random-placement-2");
 const p1ReadyButton = document.querySelector(".player-1-ready");
 const p2ReadyButton = document.querySelector(".player-2-ready");
 const startButton = document.querySelector(".start-button");
+const modal = document.querySelector(".modal");
+const submitButton = document.getElementById("submit-button");
+
+let player1;
+let player2;
+let currentPlayer;
+
 startButton.disabled = true;
 let movesBlocked = true;
-let currentPlayer = 1;
 let player1Ready = false;
 let player2Ready = false;
+let gameStarted = false;
+
+window.onload = () => {
+  modal.showModal();
+};
+
+submitButton.addEventListener("click", (event) => {
+  event.preventDefault();
+  const firstName = document.getElementById("first-player-name").value;
+  const secondName = document.getElementById("second-player-name").value;
+  modal.close();
+  modal.remove();
+  player1 = new Player(firstName);
+  player2 = new Player(secondName);
+  console.log(player1.playerName);
+  console.log(player2.playerName);
+  currentPlayer = player1;
+  setGridSize(firstPlayerContainer, player1);
+  setGridSize(secondPlayerContainer, player2);
+});
 
 startButton.addEventListener("click", () => {
   randomPlacementButton.disabled = true;
@@ -21,9 +47,10 @@ startButton.addEventListener("click", () => {
   randomPlacementButton2.disabled = true;
   randomPlacementButton2.classList.add("locked-button");
   setTimeout(() => {
-    headingStatus.textContent = `It's player ${currentPlayer}'s turn!`;
+    headingStatus.textContent = `It's ${player1.playerName}'s turn!`;
   }, 750);
   movesBlocked = false;
+  gameStarted = true;
   p1Tiles.forEach((tile) => tile.classList.remove("locked-tile"));
   p2Tiles.forEach((tile) => tile.classList.remove("locked-tile"));
   p2Tiles.forEach((tile) => tile.classList.remove("occupied-tile"));
@@ -34,9 +61,8 @@ startButton.addEventListener("click", () => {
 
 function swapPlayer() {
   movesBlocked = true;
-  console.log("Coming in as:", currentPlayer);
-  if (currentPlayer === 1) {
-    currentPlayer = 2;
+  if (currentPlayer === player1) {
+    currentPlayer = player2;
     player2.playerGameboard.getBoard().forEach((row, i) => {
       row.forEach((cell, j) => {
         if (cell.ship) {
@@ -50,7 +76,7 @@ function swapPlayer() {
     firstPlayerContainer.classList.remove("hidden-board");
     movesBlocked = false;
   } else {
-    currentPlayer = 1;
+    currentPlayer = player1;
     player1.playerGameboard.getBoard().forEach((row, i) => {
       row.forEach((cell, j) => {
         if (cell.ship) {
@@ -63,7 +89,7 @@ function swapPlayer() {
     firstPlayerContainer.classList.remove("hidden-board");
     movesBlocked = false;
   }
-  headingStatus.textContent = `${currentPlayer}, your turn!`;
+  headingStatus.textContent = `${currentPlayer.playerName}, your turn!`;
 }
 
 function getRandomInt(min, max) {
@@ -89,9 +115,6 @@ function setGridSize(container, player) {
     }
   }
 }
-
-const player1 = new Player();
-const player2 = new Player();
 
 function randomisePlacement() {
   let num1 = getRandomInt(0, 10);
@@ -173,8 +196,6 @@ p2ReadyButton.addEventListener("click", () => {
   startButton.classList.remove("locked-button");
 });
 
-setGridSize(firstPlayerContainer, player1);
-setGridSize(secondPlayerContainer, player2);
 firstPlayerContainer.classList.add("hidden-board");
 secondPlayerContainer.classList.add("hidden-board");
 randomPlacementButton2.classList.add("hidden-button");
@@ -185,7 +206,12 @@ p1Tiles.forEach((tile) => tile.classList.add("locked-tile"));
 p2Tiles.forEach((tile) => tile.classList.add("locked-tile"));
 
 document.addEventListener("keydown", (event) => {
-  if (event.key.toLowerCase() === "r" && movesBlocked) {
+  if (
+    event.key &&
+    event.key.toLowerCase() === "r" &&
+    movesBlocked &&
+    gameStarted
+  ) {
     swapPlayer();
   }
 });
@@ -197,10 +223,9 @@ secondPlayerContainer.addEventListener("click", (event) => {
   const tile = event.target.closest(".tile");
 
   if (!tile) return;
-  if (currentPlayer !== 1 || movesBlocked === true) return;
+  if (currentPlayer !== player1 || movesBlocked === true) return;
   if (player1.playerGameboard.allSunk()) {
-    headingStatus.textContent =
-      "Game over, player 2 has won this round of Battleship!";
+    headingStatus.textContent = `Game over, ${player2.playerName} has won this round of Battleship!`;
     movesBlocked = true;
     p1Tiles.forEach((tile) => tile.classList.add("locked-tile"));
     p2Tiles.forEach((tile) => tile.classList.add("locked-tile"));
@@ -223,8 +248,7 @@ secondPlayerContainer.addEventListener("click", (event) => {
   }
   p1IllegalMoves.push([selectedRow, selectedCol]);
   if (player2.playerGameboard.allSunk()) {
-    headingStatus.textContent =
-      "Game over, player 1 has won this round of Battleship!";
+    headingStatus.textContent = `Game over, ${player1.playerName} has won this round of Battleship!`;
     movesBlocked = true;
     p1Tiles.forEach((tile) => tile.classList.add("locked-tile"));
     p2Tiles.forEach((tile) => tile.classList.add("locked-tile"));
@@ -235,10 +259,10 @@ secondPlayerContainer.addEventListener("click", (event) => {
     secondPlayerContainer.classList.add("hidden-board");
     firstPlayerContainer.classList.add("hidden-board");
     let domCurrent = currentPlayer;
-    if (domCurrent === 1) {
-      domCurrent = 2;
+    if (domCurrent === player1) {
+      domCurrent = player2.playerName;
     } else {
-      domCurrent = 1;
+      domCurrent = player1.playerName;
     }
     headingStatus.textContent = `It's ${domCurrent} turn! (Press R to continue)`;
   }, 2000);
@@ -248,10 +272,9 @@ firstPlayerContainer.addEventListener("click", (event) => {
   const tile = event.target.closest(".tile");
 
   if (!tile) return;
-  if (currentPlayer !== 2 || movesBlocked === true) return;
+  if (currentPlayer !== player2 || movesBlocked === true) return;
   if (player2.playerGameboard.allSunk()) {
-    headingStatus.textContent =
-      "Game over, player 1 has won this round of Battleship!";
+    headingStatus.textContent = `Game over, ${player1.playerName} has won this round of Battleship!`;
     movesBlocked = true;
     p1Tiles.forEach((tile) => tile.classList.add("locked-tile"));
     p2Tiles.forEach((tile) => tile.classList.add("locked-tile"));
@@ -274,8 +297,7 @@ firstPlayerContainer.addEventListener("click", (event) => {
   }
   p2IllegalMoves.push([selectedRow, selectedCol]);
   if (player1.playerGameboard.allSunk()) {
-    headingStatus.textContent =
-      "Game over, player 2 has won this round of Battleship!";
+    headingStatus.textContent = `Game over, ${player2.playerName} has won this round of Battleship!`;
     movesBlocked = true;
     p1Tiles.forEach((tile) => tile.classList.add("locked-tile"));
     p2Tiles.forEach((tile) => tile.classList.add("locked-tile"));
@@ -286,10 +308,10 @@ firstPlayerContainer.addEventListener("click", (event) => {
     secondPlayerContainer.classList.add("hidden-board");
     firstPlayerContainer.classList.add("hidden-board");
     let domCurrent = currentPlayer;
-    if (domCurrent === 1) {
-      domCurrent = 2;
+    if (domCurrent === player1) {
+      domCurrent = player2.playerName;
     } else {
-      domCurrent = 1;
+      domCurrent = player1.playerName;
     }
     headingStatus.textContent = `It's ${domCurrent} turn! (Press R to continue)`;
   }, 2000);
