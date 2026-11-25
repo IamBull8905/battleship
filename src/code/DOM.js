@@ -21,6 +21,8 @@ let movesBlocked = true;
 let player1Ready = false;
 let player2Ready = false;
 let gameStarted = false;
+let player1Ear = "mickey-shot";
+let player2Ear = "minnie-shot";
 
 window.onload = () => {
   modal.showModal();
@@ -46,11 +48,9 @@ startButton.addEventListener("click", () => {
   randomPlacementButton.classList.add("locked-button");
   randomPlacementButton2.disabled = true;
   randomPlacementButton2.classList.add("locked-button");
-  setTimeout(() => {
-    headingStatus.textContent = `It's ${player1.playerName}'s turn!`;
-  }, 750);
   movesBlocked = false;
   gameStarted = true;
+  updateEarStatus();
   p1Tiles.forEach((tile) => tile.classList.remove("locked-tile"));
   p2Tiles.forEach((tile) => tile.classList.remove("locked-tile"));
   p2Tiles.forEach((tile) => tile.classList.remove("occupied-tile"));
@@ -89,7 +89,7 @@ function swapPlayer() {
     firstPlayerContainer.classList.remove("hidden-board");
     movesBlocked = false;
   }
-  headingStatus.textContent = `${currentPlayer.playerName}, your turn!`;
+  updateEarStatus();
 }
 
 function getRandomInt(min, max) {
@@ -216,6 +216,33 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
+function updateEarStatus() {
+  if (!currentPlayer) return;
+  const ear = currentPlayer === player1 ? player1Ear : player2Ear;
+
+  headingStatus.textContent = `${currentPlayer.playerName}'s turn! Using ${ear === "mickey-shot" ? "🐭 Mickey" : "🎀 Minnie"} ears`;
+}
+
+function swapEars(playerEar) {
+  if (playerEar === "mickey-shot") {
+    playerEar = "minnie-shot";
+  } else {
+    playerEar = "mickey-shot";
+  }
+  return playerEar;
+}
+
+document.addEventListener("keydown", (event) => {
+  if (event.key && event.key.toLowerCase() === "e" && gameStarted) {
+    if (currentPlayer === player1) {
+      player1Ear = swapEars(player1Ear);
+    } else {
+      player2Ear = swapEars(player2Ear);
+    }
+  }
+  updateEarStatus();
+});
+
 let p1IllegalMoves = [];
 let p2IllegalMoves = [];
 
@@ -242,7 +269,7 @@ secondPlayerContainer.addEventListener("click", (event) => {
   }
   let result = player2.playerGameboard.receiveAttack(selectedRow, selectedCol);
   if (result) {
-    tile.classList.add("shot-tile");
+    tile.classList.add(player1Ear);
   } else {
     tile.classList.add("missed-tile");
   }
@@ -291,7 +318,7 @@ firstPlayerContainer.addEventListener("click", (event) => {
   }
   let result = player1.playerGameboard.receiveAttack(selectedRow, selectedCol);
   if (result) {
-    tile.classList.add("shot-tile");
+    tile.classList.add(player2Ear);
   } else {
     tile.classList.add("missed-tile");
   }
